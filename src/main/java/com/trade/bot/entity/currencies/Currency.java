@@ -4,14 +4,24 @@ import com.trade.bot.entity.Statistic;
 
 import java.util.ResourceBundle;
 
-public abstract class Currency {
+public class Currency {
     private String name;
 
     private Statistic askStatistic;
 
     private Statistic bidStatistic;
 
-    public abstract String getName();
+    public Currency(String name){
+        this.name = name;
+    }
+
+    public String getName(){
+        return name;
+    };
+
+    public void setName(String name){
+        this.name = name;
+    };
 
     public Double getAskPriceTH(){
         return Double.parseDouble(ResourceBundle.getBundle("analyze").getString("AskPriceTH"));
