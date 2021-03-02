@@ -9,6 +9,7 @@ import com.trade.bot.entity.currencies.Euro;
 import com.trade.bot.service.AnaylzeService;
 import com.trade.bot.service.ArbitrageService;
 import com.trade.bot.service.CurrencyService;
+import com.trade.bot.service.DatabaseService;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -30,6 +31,7 @@ public class TradeBot {
         Ethereum ethereum = new Ethereum();
         Euro euro = new Euro();
         getInstance().doArbitrage(ethereum, euro, bitcoin,500, 200);*/
+        DatabaseService.getInstance().getClient();
         ArbitrageService.getInstance().doArbitrage();
 
         return;
