@@ -6,6 +6,7 @@ import com.binance.api.client.domain.market.TickerPrice;
 import com.binance.api.client.exception.BinanceApiException;
 import com.trade.bot.entity.currencies.Currency;
 import com.trade.bot.entity.currencies.Euro;
+import com.trade.bot.interfaces.service.ICurrencyService;
 import org.javatuples.Pair;
 
 import java.util.List;
@@ -14,18 +15,9 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Future;
 import java.util.stream.Collectors;
 
-public class CurrencyService extends ApiService {
+public class CurrencyService extends ApiService implements ICurrencyService {
 
     private static ResourceBundle currencyBundle = ResourceBundle.getBundle("currency");
-
-    private static CurrencyService instance;
-
-    public static CurrencyService getInstance() {
-        if(instance == null){
-            instance = new CurrencyService();
-        }
-        return instance;
-    }
 
     public Future<TickerPrice> getEuroPriceAsync(Currency currency)  throws InterruptedException {
         Euro euro = new Euro();

@@ -24,25 +24,27 @@ public class TradeBot {
 
     public static void main(String[] args) throws InterruptedException {
 
+        DatabaseService databaseService = (DatabaseService) ServiceLocator.getService("DatabaseService");
+        DockerSerivce dockerSerivce = (DockerSerivce) ServiceLocator.getService("DockerSerivce");
+        ArbitrageService arbitrageService = (ArbitrageService) ServiceLocator.getService("ArbitrageService");
+
 /*        Bitcoin bitcoin = new Bitcoin();
         Ethereum ethereum = new Ethereum();
         Euro euro = new Euro();
         getInstance().doArbitrage(ethereum, euro, bitcoin,500, 200);*/
-        System.out.println(DockerSerivce.getInstance().isInsideDocker());
-        DatabaseService.getInstance().getClient();
-        ArbitrageService.getInstance().doArbitrage();
+        System.out.println(dockerSerivce.isInsideDocker());
+        databaseService.getClient();
+        arbitrageService.doArbitrageForAll();
+
+
 
         return;
     }
 
-    private void doArbitrage(Currency currency1, Currency currency2, Currency currency3, int lots, double threshold){
+/*    private void doArbitrage(Currency currency1, Currency currency2, Currency currency3, int lots, double threshold){
         Arbitrage arbitrage = new Arbitrage(currency1, currency2, currency3, lots);
         while(true){
-            ArbitrageService.getInstance().getExchangeRate(arbitrage);
-            double profit = ArbitrageService.getInstance().getProfit(arbitrage);
-            if(profit > threshold)
-                System.out.println("NowBuy");
-            System.out.println(profit);
+            ArbitrageService.getInstance().doArbitrage(arbitrage);
         }
     }
 
@@ -61,5 +63,5 @@ public class TradeBot {
         System.out.println((tickerPrice.getPrice()+"sync"));
 
         AnaylzeService.getInstance().analyzeOrderBook(bitcoin, euro);
-    }
+    }*/
 }

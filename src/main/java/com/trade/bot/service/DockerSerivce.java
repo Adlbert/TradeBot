@@ -1,17 +1,10 @@
 package com.trade.bot.service;
 
+import com.trade.bot.interfaces.service.IDockerService;
+
 import java.io.File;
 
-public class DockerSerivce {
-
-    private static DockerSerivce instance;
-
-    public static DockerSerivce getInstance() {
-        if (instance == null) {
-            instance = new DockerSerivce();
-        }
-        return instance;
-    }
+public class DockerSerivce implements IDockerService {
 
     public boolean isInsideDocker(){
         File file = new File("/.dockerenv");

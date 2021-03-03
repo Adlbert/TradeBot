@@ -7,20 +7,12 @@ import com.binance.api.client.domain.market.OrderBook;
 import com.binance.api.client.domain.market.OrderBookEntry;
 import com.trade.bot.entity.Statistic;
 import com.trade.bot.entity.currencies.Currency;
+import com.trade.bot.interfaces.service.IAnalyzeService;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class AnaylzeService extends ApiService {
-
-    private static AnaylzeService instance;
-
-    public static AnaylzeService getInstance() {
-        if(instance == null){
-            instance = new AnaylzeService();
-        }
-        return instance;
-    }
+public class AnaylzeService extends ApiService implements IAnalyzeService {
 
     private void getStatistics(OrderBook orderBook, Statistic statistic){
         Double avgQty  = 0.0;

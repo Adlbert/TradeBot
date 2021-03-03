@@ -7,6 +7,7 @@ import com.binance.api.client.exception.BinanceApiException;
 import com.trade.bot.entity.Arbitrage;
 import com.trade.bot.entity.currencies.Bitcoin;
 import com.trade.bot.entity.currencies.Currency;
+import com.trade.bot.interfaces.service.IAbritrageService;
 import org.javatuples.Pair;
 
 import java.util.List;
@@ -15,18 +16,13 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
-public class ArbitrageService extends ApiService {
+public class ArbitrageService extends ApiService implements IAbritrageService {
 
-    private static ArbitrageService instance;
-
-    public static ArbitrageService getInstance() {
-        if (instance == null) {
-            instance = new ArbitrageService();
-        }
-        return instance;
+    public void doArbitrage(Arbitrage arbitrage){
+        getProfit(arbitrage);
     }
 
-    public void doArbitrage() throws InterruptedException {
+    public void doArbitrageForAll() throws InterruptedException {
         List<TickerPrice> allPrices = restClient.getAllPrices();
         BinanceApiCallback<List<Asset>> callback;
         CompletableFuture<List<Asset>> allAssetsCompletableFuture = new CompletableFuture<>();
@@ -95,7 +91,7 @@ public class ArbitrageService extends ApiService {
                         }*/
                     }
                     Arbitrage arbitrage = new Arbitrage(c1, c2, c3, price1, price2, price3, lots);
-                    double profit = ArbitrageService.getInstance().getProfit(arbitrage);
+                    double profit = getProfit(arbitrage);
                     if (profit > threshold) {
                         System.out.println("NowBuy");
                         System.out.println(c1.getName() + " " + c2.getName() + " " + c3.getName());
@@ -113,25 +109,7 @@ public class ArbitrageService extends ApiService {
         System.out.println("Found " + count + " out of " + (allPrices.size() * allPrices.size() - allPrices.size()));
     }
 
-    public void getExchangeRateAsync(Arbitrage arbitrage) throws ExecutionException, InterruptedException {
-        Future<Double> rate1 = CurrencyService.getInstance().getPriceAsDoubleAsync(arbitrage.getPair1().getValue0(), arbitrage.getPair1().getValue1());
-        Future<Double> rate2 = CurrencyService.getInstance().getPriceAsDoubleAsync(arbitrage.getPair2().getValue0(), arbitrage.getPair2().getValue1());
-        Future<Double> rate3 = CurrencyService.getInstance().getPriceAsDoubleAsync(arbitrage.getPair3().getValue0(), arbitrage.getPair3().getValue1());
-        arbitrage.setRate1(rate1.get());
-        arbitrage.setRate2(rate2.get());
-        arbitrage.setRate3(rate3.get());
-    }
-
-    public void getExchangeRate(Arbitrage arbitrage) {
-        double rate1 = CurrencyService.getInstance().getPriceAsDouble(arbitrage.getPair1().getValue0(), arbitrage.getPair1().getValue1());
-        double rate2 = CurrencyService.getInstance().getPriceAsDouble(arbitrage.getPair2().getValue0(), arbitrage.getPair2().getValue1());
-        double rate3 = CurrencyService.getInstance().getPriceAsDouble(arbitrage.getPair3().getValue0(), arbitrage.getPair3().getValue1());
-        arbitrage.setRate1(rate1);
-        arbitrage.setRate2(rate2);
-        arbitrage.setRate3(rate3);
-    }
-
-    public double getProfit(Arbitrage arbitrage) {
+    private double getProfit(Arbitrage arbitrage) {
         List<Pair<Pair, Double>> orderedCurrencies = arbitrage.getOrderedCurrencyList();
         double ex1 = arbitrage.getLots() / orderedCurrencies.get(0).getValue1();
         double ex2 = ex1 / orderedCurrencies.get(1).getValue1();
