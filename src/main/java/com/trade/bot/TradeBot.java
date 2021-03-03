@@ -6,10 +6,7 @@ import com.trade.bot.entity.currencies.Bitcoin;
 import com.trade.bot.entity.currencies.Currency;
 import com.trade.bot.entity.currencies.Ethereum;
 import com.trade.bot.entity.currencies.Euro;
-import com.trade.bot.service.AnaylzeService;
-import com.trade.bot.service.ArbitrageService;
-import com.trade.bot.service.CurrencyService;
-import com.trade.bot.service.DatabaseService;
+import com.trade.bot.service.*;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -31,6 +28,7 @@ public class TradeBot {
         Ethereum ethereum = new Ethereum();
         Euro euro = new Euro();
         getInstance().doArbitrage(ethereum, euro, bitcoin,500, 200);*/
+        System.out.println(DockerSerivce.getInstance().isInsideDocker());
         DatabaseService.getInstance().getClient();
         ArbitrageService.getInstance().doArbitrage();
 
