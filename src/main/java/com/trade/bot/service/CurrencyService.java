@@ -2,22 +2,31 @@ package com.trade.bot.service;
 
 import com.binance.api.client.BinanceApiCallback;
 import com.binance.api.client.domain.general.Asset;
+import com.binance.api.client.domain.general.ExchangeInfo;
 import com.binance.api.client.domain.market.TickerPrice;
 import com.binance.api.client.exception.BinanceApiException;
 import com.trade.bot.entity.currencies.Currency;
 import com.trade.bot.entity.currencies.Euro;
 import com.trade.bot.interfaces.service.ICurrencyService;
+import org.bson.BsonRegularExpression;
 import org.javatuples.Pair;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Future;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class CurrencyService extends ApiService implements ICurrencyService {
 
     private static ResourceBundle currencyBundle = ResourceBundle.getBundle("currency");
+
+    public List<Asset> LoadAllAssets() throws InterruptedException {
+        return new ArrayList<>();
+    }
 
     public Future<TickerPrice> getEuroPriceAsync(Currency currency)  throws InterruptedException {
         Euro euro = new Euro();
@@ -37,7 +46,7 @@ public class CurrencyService extends ApiService implements ICurrencyService {
         return tickerPriceCompletableFuture;
     }
 
-    public Future<Double> getPriceAsDoubleAsync(Currency currency1, Currency currency2){
+    public Future<Double> getPriceTradeBotoubleAsync(Currency currency1, Currency currency2){
         BinanceApiCallback<Double> callback;
         CompletableFuture<Double> tickerPriceCompletableFuture = new CompletableFuture<>();
         restAsyncClient.getPrice(currency1.getName() + currency2.getName(), (response)->{
@@ -49,7 +58,7 @@ public class CurrencyService extends ApiService implements ICurrencyService {
         return restClient.getPrice(currency1.getName() + currency2.getName());
     }
 
-    public Double getPriceAsDouble(Currency currency1, Currency currency2){
+    public Double getPriceTradeBotouble(Currency currency1, Currency currency2){
         Double price;
         try{
             price = Double.parseDouble(restClient.getPrice(currency1.getName() + currency2.getName()).getPrice());

@@ -1,53 +1,67 @@
 package com.trade.bot;
 
+import com.binance.api.client.BinanceApiCallback;
+import com.binance.api.client.domain.general.Asset;
+import com.binance.api.client.domain.general.ExchangeInfo;
 import com.binance.api.client.domain.market.TickerPrice;
 import com.trade.bot.entity.Arbitrage;
+import com.trade.bot.entity.Trade;
 import com.trade.bot.entity.currencies.Bitcoin;
 import com.trade.bot.entity.currencies.Currency;
 import com.trade.bot.entity.currencies.Ethereum;
 import com.trade.bot.entity.currencies.Euro;
 import com.trade.bot.service.*;
 
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 public class TradeBot {
 
-    private static TradeBot instance;
+    //Services
+    private AnaylzeService anaylzeService;
+    private ArbitrageService arbitrageService;
+    private CurrencyService currencyService;
+    private DatabaseService databaseService;
+    private DockerSerivce dockerSerivce;
 
-    public static TradeBot getInstance() {
-        if(instance == null){
-            instance = new TradeBot();
-        }
-        return instance;
-    }
+    //Helper
+    private Database database;
 
     public static void main(String[] args) throws InterruptedException {
 
-        DatabaseService databaseService = (DatabaseService) ServiceLocator.getService("DatabaseService");
-        DockerSerivce dockerSerivce = (DockerSerivce) ServiceLocator.getService("DockerSerivce");
-        ArbitrageService arbitrageService = (ArbitrageService) ServiceLocator.getService("ArbitrageService");
+        TradeBot tradeBot = new TradeBot();
+        tradeBot.load();
+        tradeBot.start();
 
-/*        Bitcoin bitcoin = new Bitcoin();
-        Ethereum ethereum = new Ethereum();
-        Euro euro = new Euro();
-        getInstance().doArbitrage(ethereum, euro, bitcoin,500, 200);*/
-        System.out.println(dockerSerivce.isInsideDocker());
-        databaseService.getClient();
-        arbitrageService.doArbitrageForAll();
-
-
-
-        return;
     }
 
-/*    private void doArbitrage(Currency currency1, Currency currency2, Currency currency3, int lots, double threshold){
-        Arbitrage arbitrage = new Arbitrage(currency1, currency2, currency3, lots);
-        while(true){
-            ArbitrageService.getInstance().doArbitrage(arbitrage);
+    public void load(){
+        System.out.println("Load Services ...");
+        anaylzeService = (AnaylzeService) ServiceLocator.getService("AnaylzeService");
+        arbitrageService = (ArbitrageService) ServiceLocator.getService("ArbitrageService");
+        currencyService = (CurrencyService) ServiceLocator.getService("CurrencyService");
+        databaseService = (DatabaseService) ServiceLocator.getService("DatabaseService");
+        dockerSerivce = (DockerSerivce) ServiceLocator.getService("DockerSerivce");
+
+        System.out.println("Load Database ...");
+        database = new Database(databaseService, dockerSerivce);
+
+    }
+
+    public void start(){
+        try{
+            List<TickerPrice> allPrices = ApiService.restClient.getAllPrices();
+            ExchangeInfo info = ApiService.restClient.getExchangeInfo();
+            arbitrageService.doArbitrageForAll(allPrices, info.getSymbols());
+        }catch (InterruptedException ex){
+
         }
+
     }
 
+    /*
     private void statisticExample(){
         Bitcoin bitcoin = new Bitcoin();
         Euro euro = new Euro();

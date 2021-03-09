@@ -1,16 +1,25 @@
 version: "3.7"
 
 services:
-  bot:
-    image: adrobin/tradebot:1.0-SNAPSHOT
+#  bot:
+#    image: adrobin/tradebot:1.0-SNAPSHOT
   mongodb:
     image: mongo:latest
+    container_name: mongodb
+    restart: unless-stopped
+    hostname: mongodb
     environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: rootpassword
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin
+      MONGO_INITDB_DATABASE: tradebot_database
+      MONGODB_DATA_DIR: /data/db
+      MONDODB_LOG_DIR: /data/db/log
     ports:
       - 27017:27017
     volumes:
-      - mongodb_data_container:/data/db
+      - mongodbdata:/data/db
+    command: mongod --auth
+
 volumes:
-  mongodb_data_container:
+  mongodbdata:
+    driver: local
