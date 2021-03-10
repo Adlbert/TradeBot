@@ -3,6 +3,7 @@ package com.trade.bot.service;
 import com.binance.api.client.BinanceApiAsyncRestClient;
 import com.binance.api.client.BinanceApiClientFactory;
 import com.binance.api.client.BinanceApiRestClient;
+import com.binance.api.client.BinanceApiWebSocketClient;
 
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
@@ -12,6 +13,7 @@ public class ApiService {
 
     private BinanceApiAsyncRestClient restAsyncClient;
     private BinanceApiRestClient restClient;
+    private BinanceApiWebSocketClient webSocketClient;
 
 
     public ApiService(){
@@ -19,6 +21,7 @@ public class ApiService {
         BinanceApiClientFactory apiClientFactory = BinanceApiClientFactory.newInstance(apiBundle.getString("API_KEY"), apiBundle.getString("API_SECRET"));
         restAsyncClient = apiClientFactory.newAsyncRestClient();
         restClient = apiClientFactory.newRestClient();
+        webSocketClient =  apiClientFactory.newWebSocketClient();
     }
 
     public BinanceApiAsyncRestClient getRestAsyncClient() {
@@ -27,5 +30,9 @@ public class ApiService {
 
     public BinanceApiRestClient getRestClient() {
         return restClient;
+    }
+
+    public BinanceApiWebSocketClient getWebSocketClient() {
+        return webSocketClient;
     }
 }

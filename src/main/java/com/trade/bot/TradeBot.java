@@ -1,5 +1,8 @@
 package com.trade.bot;
 
+import com.binance.api.client.domain.market.Candlestick;
+import com.binance.api.client.domain.market.CandlestickInterval;
+import com.trade.bot.model.AnaylzeCandleStick;
 import com.trade.bot.model.Arbitrage;
 import com.trade.bot.service.*;
 
@@ -40,7 +43,8 @@ public class TradeBot {
 
     public void start(){
         Arbitrage arbitrage = new Arbitrage(200,0, arbitrageService, apiService);
-        arbitrage.start();
+        //arbitrage.start();
+        AnaylzeCandleStick anaylzeEthBtcCandleStick = new AnaylzeCandleStick("ETHBTC", CandlestickInterval.HOURLY, apiService, anaylzeService);
 
     }
 
