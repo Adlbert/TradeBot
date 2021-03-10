@@ -9,11 +9,11 @@ import java.util.List;
 import java.util.concurrent.Future;
 
 public interface ICurrencyService {
-    Future<TickerPrice> getEuroPriceAsync(Currency currency)  throws InterruptedException;
-    TickerPrice getEuroPrice(Currency currency);
-    Future<TickerPrice> getPriceAsync(Currency currency1, Currency currency2);
-    Future<Double> getPriceTradeBotoubleAsync(Currency currency1, Currency currency2);
-    TickerPrice getPrice(Currency currency1, Currency currency2);
-    Double getPriceTradeBotouble(Currency currency1, Currency currency2);
-    Pair<Asset,Asset> getAssetFromSymbol(List<Asset> allAssets, String symbol);
+//    Future<TickerPrice> getEuroPriceAsync(Currency currency)  throws InterruptedException;
+//    TickerPrice getEuroPrice(Currency currency);
+//    Future<TickerPrice> getPriceAsync(Currency currency1, Currency currency2);
+//    Future<Double> getPriceTradeBotoubleAsync(Currency currency1, Currency currency2);
+//    TickerPrice getPrice(Currency currency1, Currency currency2);
+//    Double getPriceTradeBotouble(Currency currency1, Currency currency2);
+//    Pair<Asset,Asset> getAssetFromSymbol(List<Asset> allAssets, String symbol);
 }

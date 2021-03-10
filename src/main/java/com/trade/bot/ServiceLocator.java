@@ -32,6 +32,8 @@ class InitialContext {
             return new AnaylzeService();
         } else if (serviceName.equalsIgnoreCase("ArbitrageService")) {
             return new ArbitrageService();
+        } else if (serviceName.equalsIgnoreCase("ApiService")) {
+            return new ApiService();
         } else if (serviceName.equalsIgnoreCase("CurrencyService")) {
             return new CurrencyService();
         } else if (serviceName.equalsIgnoreCase("DatabaseService")) {

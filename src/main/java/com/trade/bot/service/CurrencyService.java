@@ -20,11 +20,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-public class CurrencyService extends ApiService implements ICurrencyService {
+public class CurrencyService implements ICurrencyService {
 
     private static ResourceBundle currencyBundle = ResourceBundle.getBundle("currency");
 
-    public List<Asset> LoadAllAssets() throws InterruptedException {
+/*    public List<Asset> LoadAllAssets() throws InterruptedException {
         return new ArrayList<>();
     }
 
@@ -36,9 +36,9 @@ public class CurrencyService extends ApiService implements ICurrencyService {
     public TickerPrice getEuroPrice(Currency currency){
         Euro euro = new Euro();
         return getPrice(currency, euro);
-    }
+    }*/
 
-    public Future<TickerPrice> getPriceAsync(Currency currency1, Currency currency2){
+/*    public Future<TickerPrice> getPriceAsync(Currency currency1, Currency currency2){
         BinanceApiCallback<TickerPrice> callback;
         CompletableFuture<TickerPrice> tickerPriceCompletableFuture = new CompletableFuture<>();
         restAsyncClient.getPrice(currency1.getName() + currency2.getName(), (response)->{
@@ -66,7 +66,7 @@ public class CurrencyService extends ApiService implements ICurrencyService {
             price = 1 / Double.parseDouble(restClient.getPrice(currency2.getName() + currency1.getName()).getPrice());
         }
         return price;
-    }
+    }*/
 
     public Pair<Asset,Asset> getAssetFromSymbol(List<Asset> allAssets, String symbol){
         List<Asset> filteredAssets = allAssets.stream().filter(

@@ -12,7 +12,7 @@ import com.trade.bot.interfaces.service.IAnalyzeService;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AnaylzeService extends ApiService implements IAnalyzeService {
+public class AnaylzeService implements IAnalyzeService {
 
     private void getStatistics(OrderBook orderBook, Statistic statistic){
         Double avgQty  = 0.0;
@@ -50,11 +50,10 @@ public class AnaylzeService extends ApiService implements IAnalyzeService {
         currency.setBidStatistic(bidStatistic);
     }
 
-    public void analyzeOrderBook(Currency currencyFrom, Currency currencyTo){
+    public void analyzeOrderBook(OrderBook orderBook, Currency currencyFrom, Currency currencyTo){
         List<OrderBookEntry> interestingBids = new ArrayList<>();
         List<OrderBookEntry> interestingAsks = new ArrayList<>();
         //legal range is '5, 10, 20, 50, 100, 500, 1000, 5000'
-        OrderBook orderBook = restClient.getOrderBook(currencyFrom.getName()+currencyTo.getName(), 500);
         getBidStatistics(currencyTo, orderBook);
         getAskStatistics(currencyTo, orderBook);
 

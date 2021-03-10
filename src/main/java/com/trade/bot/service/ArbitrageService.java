@@ -1,32 +1,21 @@
 package com.trade.bot.service;
 
-import com.binance.api.client.BinanceApiCallback;
-import com.binance.api.client.domain.general.Asset;
-import com.binance.api.client.domain.general.ExchangeInfo;
 import com.binance.api.client.domain.general.SymbolInfo;
 import com.binance.api.client.domain.market.TickerPrice;
-import com.binance.api.client.exception.BinanceApiException;
-import com.trade.bot.entity.Arbitrage;
-import com.trade.bot.entity.currencies.Bitcoin;
-import com.trade.bot.entity.currencies.Currency;
+import com.trade.bot.model.Arbitrage;
 import com.trade.bot.interfaces.service.IAbritrageService;
-import org.javatuples.Pair;
+import org.apache.commons.lang3.NotImplementedException;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
 
-public class ArbitrageService extends ApiService implements IAbritrageService {
+public class ArbitrageService implements IAbritrageService {
 
-    public void doArbitrage(Arbitrage arbitrage){
+    public void doArbitrage(String Symbol, double lots,double threshold, List<TickerPrice> allPrices, List<SymbolInfo> allSymbols){
+        throw new NotImplementedException("This method is not implemented yet.");
     }
 
-    public void doArbitrageForAll(List<TickerPrice> allPrices, List<SymbolInfo> allSymbols) throws InterruptedException {
+    public void doArbitrageForAll(double lots,double threshold, List<TickerPrice> allPrices, List<SymbolInfo> allSymbols) throws InterruptedException {
 
-        double lots = 2000;
-        double threshold = 0;
         int count = 0;
         for (int i = 0; i < allPrices.size(); i++) {
             double price;
@@ -86,13 +75,6 @@ public class ArbitrageService extends ApiService implements IAbritrageService {
         System.out.println("Found " + count + " out of " + (allPrices.size() * allPrices.size() - allPrices.size()));
     }
 
-/*    private double getProfit(Arbitrage arbitrage) {
-        List<Pair<Pair, Double>> orderedCurrencies = arbitrage.getOrderedCurrencyList();
-        double ex1 = arbitrage.getLots() / orderedCurrencies.get(0).getValue1();
-        double ex2 = ex1 / orderedCurrencies.get(1).getValue1();
-        double ex3 = ex2 / orderedCurrencies.get(0).getValue1();
-        return ex3 - arbitrage.getLots();
-    }*/
     private double getProfit(Double price1,  Double price2, Double price3, double lots){
         double ex1 = lots/ price1;
         double ex2 = ex1 / price2;

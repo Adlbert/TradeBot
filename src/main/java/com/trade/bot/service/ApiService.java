@@ -9,8 +9,23 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class ApiService {
-    private static ResourceBundle apiBundle = ResourceBundle.getBundle("api");
-    private static BinanceApiClientFactory apiClientFactory = BinanceApiClientFactory.newInstance(apiBundle.getString("API_KEY"), apiBundle.getString("API_SECRET"));
-    public static BinanceApiAsyncRestClient restAsyncClient = apiClientFactory.newAsyncRestClient();
-    public static BinanceApiRestClient restClient = apiClientFactory.newRestClient();
+
+    private BinanceApiAsyncRestClient restAsyncClient;
+    private BinanceApiRestClient restClient;
+
+
+    public ApiService(){
+        ResourceBundle apiBundle = ResourceBundle.getBundle("api");
+        BinanceApiClientFactory apiClientFactory = BinanceApiClientFactory.newInstance(apiBundle.getString("API_KEY"), apiBundle.getString("API_SECRET"));
+        restAsyncClient = apiClientFactory.newAsyncRestClient();
+        restClient = apiClientFactory.newRestClient();
+    }
+
+    public BinanceApiAsyncRestClient getRestAsyncClient() {
+        return restAsyncClient;
+    }
+
+    public BinanceApiRestClient getRestClient() {
+        return restClient;
+    }
 }
